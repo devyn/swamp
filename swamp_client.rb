@@ -68,12 +68,11 @@ class Swamp < Shoes
 			flow { para "Message: ", :stroke => yellow; @message_line = edit_line :width => 480; button "Send" do
 				$room.message $token, @message_line.text
 				@message_line.text = ""
-				@cap.clear {s = $room.occupants.size; caption "#{s} #{(s.size == 1) ? "person" : "people"} in room."}
 			end }
-			stack(:width => "100%") { background "#FFF".."#CCC"; border yellow; @chatbox = flow {} }
+			stack(:width => "100%") { background white; border orange; @chatbox = flow {} }
 			$state.writer_proc = proc do |nick, msg|
-				@chatbox.prepend { para(strong(nick), " ", msg, "\n", :stroke => black) }
-				@cap.clear {s = $room.occupants.size; caption "#{s} #{(s.size == 1) ? "person" : "people"} in room.", :stroke => white}
+				@chatbox.prepend { para(strong(nick), "[", em(Time.now.strftime("%H.%M.%S")), "] ", msg, "\n", :stroke => black) }
+				@cap.clear {s = $room.occupants.size; caption "#{s} #{(s == 1) ? "person" : "people"} in room.", :stroke => white}
 			end
 		end
 	end
